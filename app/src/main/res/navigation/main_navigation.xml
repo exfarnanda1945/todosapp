@@ -10,4 +10,19 @@
         android:name="com.example.todosapp.presentation.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/taskDoneFragment"
+        android:name="com.example.todosapp.presentation.TaskDoneFragment"
+        android:label="fragment_task_done"
+        tools:layout="@layout/fragment_task_done" />
+    <fragment
+        android:id="@+id/archiveFragment"
+        android:name="com.example.todosapp.presentation.ArchiveFragment"
+        android:label="fragment_archive"
+        tools:layout="@layout/fragment_archive" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.todosapp.presentation.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>
