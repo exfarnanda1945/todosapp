@@ -6,4 +6,16 @@
     <string name="account">Account</string>
     <string name="add_todos">Add Todos</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_todos">You have no to-dos</string>
+    <string name="todos">Todos</string>
+    <string name="example_title_todos_card">Lorem Ipsum is simply dummy text of the printing and typesetting industry</string>
+    <string name="example_todos_card_desc">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.</string>
+    <string name="search">Search</string>
+    <string name="sort_by">Sort By</string>
+    <string name="high_priority">High Priority</string>
+    <string name="medium_priority">Medium Priority</string>
+    <string name="low_priority">Low Priority</string>
+    <string name="delete_all">Delete All</string>
+    <string name="date_asc">Date ASC</string>
+    <string name="date_desc">Date DESC</string>
 </resources>

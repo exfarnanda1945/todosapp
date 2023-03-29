@@ -7,9 +7,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.todosapp.presentation.HomeFragment"
+        android:name="com.example.todosapp.presentation.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addEditActivity"
+            app:destination="@id/addEditActivity" />
+    </fragment>
     <fragment
         android:id="@+id/taskDoneFragment"
         android:name="com.example.todosapp.presentation.TaskDoneFragment"
@@ -25,4 +29,9 @@
         android:name="com.example.todosapp.presentation.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <activity
+        android:id="@+id/addEditActivity"
+        android:name="com.example.todosapp.presentation.addEdit.AddEditActivity"
+        android:label="activity_add_edit"
+        tools:layout="@layout/activity_add_edit" />
 </navigation>
