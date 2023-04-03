@@ -37,4 +37,27 @@
         <item name="android:textColor">@color/dark_gunmetal</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!--Custom DatePicker Deadline-->
+    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/red_pink</item>
+        <item name="colorOnPrimary">@color/dark_gunmetal</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent
+        </item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!--Custom for Drop down menu-->
+    <style name="Widget.App.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="hintTextColor">@color/joust_blue</item>
+        <item name="endIconTint">@color/joust_blue</item>
+    </style>
+
+    <!--Custom for checkboxes-->
+    <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/minty_green</item>
+    </style>
 </resources>
