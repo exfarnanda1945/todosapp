@@ -5,14 +5,11 @@ import com.example.todosapp.common.Constants.TABLE_NAME
 
 @Dao
 interface TodosDao {
-    @Query("SELECT * FROM $TABLE_NAME")
-    suspend fun getListTodos(): List<ToDosEntity>
+    @Query("SELECT * FROM $TABLE_NAME ORDER BY date DESC")
+    fun getListTodos(): List<ToDosEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun createTodos(todos: ToDosEntity)
-
-    @Update
-    suspend fun updateTodos(todos:ToDosEntity)
 
     @Delete
     suspend fun deleteTodos(todos: ToDosEntity)

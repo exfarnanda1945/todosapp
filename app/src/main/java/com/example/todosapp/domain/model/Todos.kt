@@ -6,9 +6,9 @@ data class Todos(
     val id: Int = 0,
     val title: String,
     val description: String,
-    val date: String,
     val priority: TodosPriority,
-    val isArchive:Boolean,
-    val isDone:Boolean,
-    val deadline: String = ""
+    val isArchive: Boolean,
+    val isDone: Boolean,
+    val date: Long? = null,
+    val deadline: Long? = null
 )

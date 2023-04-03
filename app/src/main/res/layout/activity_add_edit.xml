@@ -4,20 +4,130 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="30dp"
     tools:context=".presentation.addEdit.AddEditActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/add_edit_toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/backgroundAppBar"
+        android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:theme="?attr/actionBarTheme"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:elevation="10dp"
-        app:title="@string/todos"
-        android:background="@color/backgroundAppBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleMarginStart="30dp"
         app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:title="@string/todos" />
+
+    <RelativeLayout
+        android:id="@+id/wrap_priority_archive"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_edit_toolbar">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_priority"
+            style="@style/Widget.App.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/checkBox_archive">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete_priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="@string/select_priority"
+                android:inputType="none"
+                android:labelFor="@id/text_input_priority"
+                android:padding="0dp"
+                tools:text="LOW" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox_archive"
+            style="@style/Widget.App.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="45dp"
+            android:text="@string/archive" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_deadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red_pink"
+        android:text="@string/pick_deadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wrap_priority_archive" />
+
+    <EditText
+        android:id="@+id/title_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints=""
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:fontFamily="@font/roboto_bold"
+        android:hint="@string/title"
+        android:inputType="textMultiLine|textVisiblePassword|textNoSuggestions"
+        android:maxLines="3"
+        android:minHeight="48dp"
+        android:minLines="1"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_deadline"
+        tools:fontFamily="@font/roboto_regular"
+        tools:text="@string/example_title_todos_card" />
+
+    <EditText
+        android:id="@+id/description_edt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints=""
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="start|top"
+        android:hint="@string/description"
+        android:inputType="textMultiLine|textVisiblePassword|textNoSuggestions"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_edt"
+        tools:fontFamily="@font/times"
+        tools:text="@string/example_todos_card_desc"
+        tools:textStyle="normal" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
