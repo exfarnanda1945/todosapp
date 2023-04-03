@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.main.home.HomeFragment">
-
     <LinearLayout
         android:id="@+id/empty_todos"
         android:layout_width="wrap_content"
@@ -46,10 +45,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_todos"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
