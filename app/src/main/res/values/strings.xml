@@ -18,4 +18,12 @@
     <string name="delete_all">Delete All</string>
     <string name="date_asc">Date ASC</string>
     <string name="date_desc">Date DESC</string>
+    <string name="create">Create</string>
+    <string name="add">Add</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="select_priority"><b>Select Priority</b></string>
+    <string name="pick_deadline">Pick Deadline</string>
+    <string name="error_text">Please fill the field!</string>
+    <string name="no_deadline">No Deadline</string>
 </resources>
