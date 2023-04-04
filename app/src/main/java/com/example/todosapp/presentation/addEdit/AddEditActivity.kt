@@ -7,11 +7,13 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.navArgs
 import com.example.todosapp.R
 import com.example.todosapp.common.Utils
 import com.example.todosapp.data.local.TodosPriority
@@ -27,11 +29,13 @@ import java.util.*
 @AndroidEntryPoint
 class AddEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddEditBinding
+    private lateinit var todosParam: Todos
+    private var isUpdate = false
+    private val todosArgs: AddEditActivityArgs by navArgs()
     private var todosPriority = TodosPriority.LOW
     private var deadlineDate: Long? = null
-    private val now by lazy {
-        Calendar.getInstance().time
-    }
+    private var now = Calendar.getInstance().time.time
+    private val priority = TodosPriority.values().toList()
     private val mViewModel by viewModels<AddEditViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +43,44 @@ class AddEditActivity : AppCompatActivity() {
         binding = ActivityAddEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        changeStyleEditText()
-        setupDropdownPriority()
-        setupDatePicker()
+        if (todosArgs.todos != null) {
+            todosParam = todosArgs.todos!!
+            isUpdate = true
+            todosPriority = todosParam.priority
+            deadlineDate = todosParam.deadline
+        }
 
         setSupportActionBar(binding.addEditToolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.add)
+            title = if (isUpdate) getString(R.string.edit) else getString(R.string.add)
+        }
+
+
+        setupDropdownPriority()
+        setupDatePicker()
+        changeStyleEditText()
+        setupEditTextFile()
+
+        if (isUpdate) {
+            initValue()
+        }
+
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initValue() {
+        binding.apply {
+            titleEdt.setText(todosParam.title)
+            descriptionEdt.setText(todosParam.description)
+            checkBoxArchive.isChecked = todosParam.isArchive
+            btnDeadline.text = setDeadlineText(deadlineDate)
         }
     }
 
     private fun setupDropdownPriority() {
-        val priority = TodosPriority.values().toList()
+
         val arrayAdapter = ArrayAdapter(
             this@AddEditActivity,
             R.layout.dropdown_item,
@@ -60,9 +89,53 @@ class AddEditActivity : AppCompatActivity() {
         )
         binding.autoCompletePriority.apply {
             setAdapter(arrayAdapter)
-            setText(TodosPriority.LOW.name, false)
+            setText(todosPriority.name, false)
             setOnItemClickListener { _, _, position, _ ->
                 todosPriority = priority[position]
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupDatePicker() {
+        val constraintsBuilder =
+            CalendarConstraints.Builder()
+                .setValidator(DateValidatorPointForward.now())
+
+        val dateRangePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTheme(R.style.ThemeOverlay_App_DatePicker)
+                .setTitleText(getString(R.string.select_deadline))
+                .setSelection(if (isUpdate) deadlineDate else MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(constraintsBuilder.build())
+                .setNegativeButtonText("Clear")
+                .build()
+        dateRangePicker.clearOnNegativeButtonClickListeners()
+
+        binding.btnDeadline.apply {
+            setOnClickListener {
+                dateRangePicker.show(supportFragmentManager, "")
+
+                dateRangePicker.addOnPositiveButtonClickListener {
+                    deadlineDate = it
+                    this.text = setDeadlineText(it)
+                }
+
+                dateRangePicker.addOnNegativeButtonClickListener {
+                    this.text = setDeadlineText(null)
+                    deadlineDate = null
+                }
+            }
+        }
+    }
+
+    private fun setupEditTextFile() {
+        binding.titleEdt.apply {
+            // set focus when create
+            if (isUpdate) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+            } else {
+                requestFocus()
             }
         }
     }
@@ -108,69 +181,46 @@ class AddEditActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setupDatePicker() {
-        val constraintsBuilder =
-            CalendarConstraints.Builder()
-                .setValidator(DateValidatorPointForward.now())
-
-        val dateRangePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTheme(R.style.ThemeOverlay_App_DatePicker)
-                .setTitleText("Select Deadline")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setCalendarConstraints(constraintsBuilder.build())
-                .setNegativeButtonText("Clear")
-                .build()
-        dateRangePicker.clearOnNegativeButtonClickListeners()
-
-        binding.btnDeadline.apply {
-            setOnClickListener {
-                dateRangePicker.show(supportFragmentManager, "")
-
-                dateRangePicker.addOnPositiveButtonClickListener {
-                    val convertTime = Utils.convertLongToTime(it)
-                    deadlineDate = it
-                    this.text = "Deadline set ${convertTime.replace(".", " ")}"
-                }
-
-                dateRangePicker.addOnNegativeButtonClickListener {
-                    this.text = "Pick Deadline"
-                    deadlineDate = null
-                }
-            }
-        }
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add_menu, menu)
+        val mainMenu = if (isUpdate) R.menu.edit_menu else R.menu.add_menu
+        menuInflater.inflate(mainMenu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.create_todos) {
-            if (validateForm()) {
-                val todos = Todos(
-                    title = binding.titleEdt.text.toString(),
-                    description = binding.descriptionEdt.text.toString(),
-                    priority = todosPriority,
-                    date = now.time, isArchive = binding.checkBoxArchive.isChecked,
-                    isDone = false,
-                    deadline = deadlineDate
-                )
-                mViewModel.upsertTodos(todos)
-                startActivity(Intent(this@AddEditActivity, MainActivity::class.java))
-            } else {
-                showErrorForm()
-            }
-
+        when (item.itemId) {
+            R.id.create_todos -> upsertTodos()
+            R.id.edit_todos -> upsertTodos()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun upsertTodos() {
+        if (validateForm()) {
+            val todos = Todos(
+                title = binding.titleEdt.text.toString(),
+                description = binding.descriptionEdt.text.toString(),
+                priority = todosPriority,
+                date = if (isUpdate) todosParam.date else now,
+                isArchive = binding.checkBoxArchive.isChecked,
+                isDone = false,
+                deadline = deadlineDate
+            )
+
+            if (isUpdate) {
+                todos.id = todosParam.id
+            }
+
+            mViewModel.upsertTodos(todos)
+            startActivity(Intent(this@AddEditActivity, MainActivity::class.java))
+        } else {
+            showErrorForm()
+        }
     }
 
     private fun validateForm(): Boolean =
@@ -184,4 +234,9 @@ class AddEditActivity : AppCompatActivity() {
             binding.descriptionEdt.error = getString(R.string.error_text)
         }
     }
+
+
+    private fun setDeadlineText(deadlineDate: Long?) = if (deadlineDate != null) "Deadline set ${
+        Utils.convertLongToTime(deadlineDate).replace(".", " ")
+    }" else getString(R.string.pick_deadline)
 }
