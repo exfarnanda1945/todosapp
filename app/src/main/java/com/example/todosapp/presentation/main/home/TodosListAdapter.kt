@@ -28,6 +28,8 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
 
     private val differ = AsyncListDiffer(this, diffCallBack)
 
+     lateinit var todosCardEvent: TodosCardEvent
+
     inner class TodosListViewHolder(private val binding: TodosCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Todos) {
@@ -47,12 +49,15 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
                     setTextColor(ContextCompat.getColor(context, R.color.red_vermilion))
                     setBackgroundColor(ContextCompat.getColor(context, R.color.pastel_red))
                 }
-            }else{
+            } else {
                 binding.txtDeadline.apply {
                     text = context.getString(R.string.no_deadline)
                     setTextColor(ContextCompat.getColor(context, R.color.may_green))
                     setBackgroundColor(ContextCompat.getColor(context, R.color.green_alabaster))
                 }
+            }
+            binding.todosCard.setOnClickListener {
+                todosCardEvent.onItemClick(item)
             }
         }
     }
@@ -85,5 +90,9 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
 
     fun setData(todos: List<Todos>) {
         differ.submitList(todos)
+    }
+
+    interface TodosCardEvent {
+        fun onItemClick(todos:Todos)
     }
 }
