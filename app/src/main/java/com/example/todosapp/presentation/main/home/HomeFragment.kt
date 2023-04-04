@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todosapp.R
 import com.example.todosapp.databinding.FragmentHomeBinding
+import com.example.todosapp.domain.model.Todos
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,7 +33,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setupHomeMenu()
         binding.btnAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addEditActivity)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddEditActivity(null))
         }
 
         binding.rvTodos.apply {
@@ -47,7 +48,14 @@ class HomeFragment : Fragment() {
                     binding.emptyTodos.isVisible = false
                     binding.rvTodos.isVisible = true
                     todosAdapter.setData(result.listTodos)
+                    todosAdapter.todosCardEvent = object : TodosListAdapter.TodosCardEvent {
+                        override fun onItemClick(todos: Todos) {
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToAddEditActivity(todos)
+                            findNavController().navigate(action)
+                        }
 
+                    }
                 }
                 result.listTodos.isEmpty() -> {
                     binding.emptyTodos.isVisible = true
@@ -77,6 +85,5 @@ class HomeFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
 
 }

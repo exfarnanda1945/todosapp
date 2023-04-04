@@ -33,5 +33,10 @@
         android:id="@+id/addEditActivity"
         android:name="com.example.todosapp.presentation.addEdit.AddEditActivity"
         android:label="activity_add_edit"
-        tools:layout="@layout/activity_add_edit" />
+        tools:layout="@layout/activity_add_edit" >
+        <argument
+            android:name="todos"
+            app:argType="com.example.todosapp.domain.model.Todos"
+            app:nullable="true" />
+    </activity>
 </navigation>
