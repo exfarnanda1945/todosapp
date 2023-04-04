@@ -5,7 +5,7 @@ import com.example.todosapp.common.Constants.TABLE_NAME
 
 @Dao
 interface TodosDao {
-    @Query("SELECT * FROM $TABLE_NAME ORDER BY date DESC")
+    @Query("SELECT * FROM $TABLE_NAME WHERE isArchive = 0 AND isDone = 0 ORDER BY date DESC")
     fun getListTodos(): List<ToDosEntity>
 
     @Upsert
