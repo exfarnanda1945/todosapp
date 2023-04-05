@@ -29,4 +29,14 @@
     <string name="select_deadline">Select Deadline</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_todos">Delete Todos</string>
+    <string name="close">Close</string>
+    <string name="mark_as_done">Mark as Done</string>
+    <string name="add_to_archive">Add to Archive</string>
+    <string name="delete_confirm">Do you want delete this todos?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="todos_delete_info">Todos Successfully deleted</string>
+    <string name="menu_item">Menu Item</string>
 </resources>
