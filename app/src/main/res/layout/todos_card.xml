@@ -14,7 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+<ImageView
+    android:contentDescription="@string/menu_item"
+    android:id="@+id/item_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_more_horiz"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="5dp"
+    app:tint="@color/gray"
+    />
         <TextView
             android:id="@+id/title_todos_card"
             android:layout_width="wrap_content"
@@ -27,7 +37,8 @@
             android:paddingTop="20dp"
             android:text="@string/example_title_todos_card"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/desc_todos_card"

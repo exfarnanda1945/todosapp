@@ -7,9 +7,7 @@ import com.example.todosapp.data.mapper.toTodosEntity
 import com.example.todosapp.data.repository.TodosRepository
 import com.example.todosapp.domain.model.Todos
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,16 +23,17 @@ class TodosRepositoryImplementation @Inject constructor(
         }
     }
 
-    override fun getListTodos(): Flow<Resource<List<Todos>>> = flow {
-        try {
-            val getTodos = dao.getListTodos()
-            val todos = getTodos.map { it.toTodos() }
-            emit(Resource.Success(todos))
+    override fun getListTodos(): Flow<Resource<List<Todos>>> {
+        return try {
+            dao.getListTodos()
+                .map { Resource.Success(it.map { value -> value.toTodos() }) }
+                .flowOn(Dispatchers.IO)
         } catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
-            Timber.d(e)
+            flow<Resource<List<Todos>>> {
+                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
+            }.flowOn(Dispatchers.IO)
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
 
     override suspend fun deleteTodos(todos: Todos) {

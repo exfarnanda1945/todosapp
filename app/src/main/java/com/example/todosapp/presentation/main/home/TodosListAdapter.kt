@@ -17,7 +17,7 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
 
     private val diffCallBack = object : DiffUtil.ItemCallback<Todos>() {
         override fun areItemsTheSame(oldItem: Todos, newItem: Todos): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Todos, newItem: Todos): Boolean {
@@ -59,6 +59,9 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
             binding.todosCard.setOnClickListener {
                 todosCardEvent.onItemClick(item)
             }
+            binding.itemMenu.setOnClickListener {
+                todosCardEvent.onItemMenuClick(item)
+            }
         }
     }
 
@@ -94,5 +97,6 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
 
     interface TodosCardEvent {
         fun onItemClick(todos:Todos)
+        fun onItemMenuClick(todos:Todos)
     }
 }

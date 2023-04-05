@@ -7,7 +7,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
     private val todosAdapter by lazy {
         TodosListAdapter()
     }
@@ -33,7 +33,11 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setupHomeMenu()
         binding.btnAdd.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddEditActivity(null))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToAddEditActivity(
+                    null
+                )
+            )
         }
 
         binding.rvTodos.apply {
@@ -52,6 +56,14 @@ class HomeFragment : Fragment() {
                         override fun onItemClick(todos: Todos) {
                             val action =
                                 HomeFragmentDirections.actionHomeFragmentToAddEditActivity(todos)
+                            findNavController().navigate(action)
+                        }
+
+                        override fun onItemMenuClick(todos: Todos) {
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToTodosItemBottomSheet(
+                                    todos
+                                )
                             findNavController().navigate(action)
                         }
 
@@ -84,6 +96,11 @@ class HomeFragment : Fragment() {
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
