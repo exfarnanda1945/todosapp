@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_addEditActivity"
             app:destination="@id/addEditActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_todosItemBottomSheet"
+            app:destination="@id/todosItemBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/taskDoneFragment"
@@ -39,4 +42,13 @@
             app:argType="com.example.todosapp.domain.model.Todos"
             app:nullable="true" />
     </activity>
+    <dialog
+        android:id="@+id/todosItemBottomSheet"
+        android:name="com.example.todosapp.presentation.main.home.TodosItemBottomSheet"
+        android:label="fragment_todos_item_bottom_sheet"
+        tools:layout="@layout/fragment_todos_item_bottom_sheet" >
+        <argument
+            android:name="todos"
+            app:argType="com.example.todosapp.domain.model.Todos" />
+    </dialog>
 </navigation>
