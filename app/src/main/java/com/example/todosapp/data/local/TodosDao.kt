@@ -1,6 +1,7 @@
 package com.example.todosapp.data.local
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.todosapp.common.Constants.TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 
@@ -14,4 +15,10 @@ interface TodosDao {
 
     @Delete
     suspend fun deleteTodos(todos: ToDosEntity)
+
+    @Query("DELETE FROM $TABLE_NAME")
+    suspend fun deleteAll()
+
+    @RawQuery(observedEntities = [ToDosEntity::class])
+    fun searchAndFilterTodos(query: SupportSQLiteQuery): Flow<List<ToDosEntity>>
 }
