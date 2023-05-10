@@ -6,6 +6,21 @@
         android:title="@string/sort_by">
         <menu>
             <item
+                android:id="@+id/date_asc"
+                android:title="@string/date_asc" />
+            <item
+                android:id="@+id/date_desc"
+                android:title="@string/date_desc" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/filterByMenu"
+        android:title="@string/filter_by">
+        <menu>
+            <item
+                android:id="@+id/all_priority"
+                android:title="@string/all" />
+            <item
                 android:id="@+id/high_priority"
                 android:title="@string/high_priority" />
             <item
@@ -14,12 +29,6 @@
             <item
                 android:id="@+id/low_priority"
                 android:title="@string/low_priority" />
-            <item
-                android:id="@+id/date_asc"
-                android:title="@string/date_asc" />
-            <item
-                android:id="@+id/date_desc"
-                android:title="@string/date_desc" />
         </menu>
     </item>
     <item
@@ -29,5 +38,6 @@
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
 </menu>
