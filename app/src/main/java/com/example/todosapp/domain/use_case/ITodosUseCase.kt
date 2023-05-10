@@ -7,7 +7,6 @@ import com.example.todosapp.domain.model.Todos
 import kotlinx.coroutines.flow.Flow
 
 interface ITodosUseCase {
-    fun getListTodos(): Flow<Resource<List<Todos>>>
     fun searchAndFilterTodos(
         filter: FilterBy,
         sort: SortBy,

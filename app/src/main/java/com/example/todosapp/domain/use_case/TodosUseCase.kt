@@ -13,9 +13,6 @@ import javax.inject.Inject
 class TodosUseCase @Inject constructor(
     private val repository: TodosRepository
 ) : ITodosUseCase {
-    override fun getListTodos(): Flow<Resource<List<Todos>>> {
-        return repository.getListTodos()
-    }
 
     override fun searchAndFilterTodos(
         filter: FilterBy,
