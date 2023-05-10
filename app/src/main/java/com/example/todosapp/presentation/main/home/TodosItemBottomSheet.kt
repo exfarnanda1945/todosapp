@@ -1,15 +1,13 @@
 package com.example.todosapp.presentation.main.home
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.example.todosapp.R
+import com.example.todosapp.common.Utils
 import com.example.todosapp.databinding.FragmentTodosItemBottomSheetBinding
 import com.example.todosapp.domain.model.Todos
 import com.example.todosapp.presentation.addEdit.AddEditActivityArgs
@@ -56,32 +54,10 @@ class TodosItemBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun deleteTodos(todos: Todos) {
-        val alertBuilder = AlertDialog.Builder(requireContext())
-        alertBuilder.apply {
-            setTitle(getString(R.string.delete))
-            setMessage(getString(R.string.delete_confirm))
-            setNegativeButton(getString(R.string.no)) { _, _ -> }
-            setPositiveButton(getString(R.string.yes)) { _, _ ->
-                homeViewModel.deleteTodos(todos)
-                Toast.makeText(
-                    requireContext(), getString(R.string.todos_delete_info),
-                    Toast.LENGTH_SHORT
-                ).show()
-                this@TodosItemBottomSheet.dismiss()
-            }
-        }
-
-        val dialog = alertBuilder.create()
-        dialog.show()
-
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
-            setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
-        }
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
-            setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        }
-
+        Utils.createAlertDialog(requireContext(), R.string.delete, R.string.delete_confirm, {
+            homeViewModel.deleteTodos(todos)
+            this@TodosItemBottomSheet.dismiss()
+        }, {}, R.string.todos_delete_info, R.color.blue)
     }
 
 
