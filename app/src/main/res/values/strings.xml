@@ -39,4 +39,8 @@
     <string name="yes">Yes</string>
     <string name="todos_delete_info">Todos Successfully deleted</string>
     <string name="menu_item">Menu Item</string>
+    <string name="delete_all_todos">Do you want to delete all todos ?</string>
+    <string name="delete_all_confirmation">All todos successfully deleted</string>
+    <string name="filter_by">Filter By</string>
+    <string name="all">All</string>
 </resources>
