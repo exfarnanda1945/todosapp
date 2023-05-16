@@ -21,7 +21,7 @@ class HomeViewModel @Inject constructor(
     val listTodos = _listTodos
 
 
-    private var _sortBy =MutableLiveData(SortBy.DATE_ASC)
+    private var _sortBy =MutableLiveData(SortBy.DATE_DESC)
     val sortBy= _sortBy
 
     private var _filterBy = MutableLiveData(FilterBy.ALL)
