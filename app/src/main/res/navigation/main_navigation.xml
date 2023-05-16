@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/taskDoneFragment"
-        android:name="com.example.todosapp.presentation.TaskDoneFragment"
+        android:name="com.example.todosapp.presentation.main.task_done.TaskDoneFragment"
         android:label="fragment_task_done"
         tools:layout="@layout/fragment_task_done" />
     <fragment

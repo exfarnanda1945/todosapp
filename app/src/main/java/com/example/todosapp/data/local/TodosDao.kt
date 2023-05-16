@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodosDao {
-    @Query("SELECT * FROM $TABLE_NAME WHERE isArchive = 0 AND isDone = 0 ORDER BY date DESC")
-    fun getListTodos(): Flow<List<ToDosEntity>>
+    @Query("SELECT * FROM $TABLE_NAME WHERE isArchive = 0 AND isDone = 1 ORDER BY date DESC")
+    fun getListDoneTodos(): Flow<List<ToDosEntity>>
 
     @Upsert
     suspend fun createTodos(todos: ToDosEntity)
@@ -21,4 +21,6 @@ interface TodosDao {
 
     @RawQuery(observedEntities = [ToDosEntity::class])
     fun searchAndFilterTodos(query: SupportSQLiteQuery): Flow<List<ToDosEntity>>
+
+
 }

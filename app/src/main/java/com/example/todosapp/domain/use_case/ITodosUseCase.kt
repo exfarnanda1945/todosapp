@@ -16,4 +16,6 @@ interface ITodosUseCase {
     suspend fun upsertTodos(todos: Todos)
     suspend fun deleteTodos(todos: Todos)
     suspend fun deleteAllTodos()
+
+    fun getListDoneTodos(): Flow<Resource<List<Todos>>>
 }

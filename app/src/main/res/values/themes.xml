@@ -17,6 +17,8 @@
         <item name="android:itemTextAppearance">@style/textPopUpMenuOverflow</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
 
+        <item name="actionModeBackground">@color/contextualToolBarColor</item>
+        <item name="windowActionModeOverlay">true</item>
         <!-- Customize your theme here. -->
     </style>
 

@@ -26,6 +26,9 @@
     <color name="may_green">#4a9f30</color>
     <color name="alice_blue">#f4f6ff</color>
     <color name="blue">#1f46fd</color>
+    <color name="darker">#151B20</color>
+    <color name="dark">#313C44</color>
+    <color name="white_gray">#eaecee</color>
 
 
     <!--Custom Bottom Navigation Item Color-->
@@ -35,5 +38,9 @@
     <!--!Custom Appbar Color-->
     <color name="backgroundAppBar">@color/white</color>
 
+    <!--Contextual Color-->
+    <color name="contextualStatusBarColor">@color/white_gray</color>
+    <color name="contextualToolBarColor">@color/white_gray</color>
+    <color name="contextualCardSelected">@color/white_gray</color>
 
 </resources>

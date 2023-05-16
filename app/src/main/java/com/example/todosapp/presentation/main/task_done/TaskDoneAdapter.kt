@@ -1,8 +1,11 @@
-package com.example.todosapp.presentation.main.home
+package com.example.todosapp.presentation.main.task_done
+
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todosapp.R
@@ -13,18 +16,23 @@ import com.example.todosapp.databinding.TodosCardBinding
 import com.example.todosapp.domain.model.Todos
 import com.example.todosapp.presentation.util.ColorInfoTodosCard
 
-class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHolder>() {
+class TaskDoneAdapter(
+    private val requireActivity: FragmentActivity,
+) : RecyclerView.Adapter<TaskDoneAdapter.MainViewHolder>() {
 
-     lateinit var todosCardEvent: TodosCardEvent
+    lateinit var actionMode: TaskDoneActionMode
 
     private val differ = AsyncListDiffer(this, AdapterDiffer.diffCallBack)
 
-    inner class TodosListViewHolder(private val binding: TodosCardBinding) :
+    inner class MainViewHolder(private val binding: TodosCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        val cardLayout = binding.root
+
         fun bind(item: Todos) {
+            binding.itemMenu.isVisible = false
             binding.titleTodosCard.text = item.title
             binding.descTodosCard.text = item.description
-            binding.todosCreatedDate.text = Utils.convertLongToTime(item.date!!).replace("."," ")
+            binding.todosCreatedDate.text = Utils.convertLongToTime(item.date!!).replace(".", " ")
             binding.txtPriority.apply {
                 val color = getColorPriority(item.priority)
                 text = item.priority.name
@@ -46,17 +54,12 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
                     setBackgroundColor(ContextCompat.getColor(context, R.color.green_alabaster))
                 }
             }
-            binding.todosCard.setOnClickListener {
-                todosCardEvent.onItemClick(item)
-            }
-            binding.itemMenu.setOnClickListener {
-                todosCardEvent.onItemMenuClick(item)
-            }
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodosListViewHolder {
-        return TodosListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+        return MainViewHolder(
             TodosCardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -69,8 +72,37 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: TodosListViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
+        val item = differ.currentList[position]
+        holder.bind(item)
+        holder.cardLayout.apply {
+            setOnClickListener {
+                if (actionMode.multiSelection) {
+                   actionMode.addToSelection(item, this@apply)
+                }
+            }
+
+            setOnLongClickListener {
+                if (actionMode.multiSelection){
+                  actionMode.addToSelection(item, this@apply)
+                }else{
+                    requireActivity.startActionMode(actionMode)
+                    actionMode.multiSelection = true
+                   actionMode.addToSelection(item, this@apply)
+                }
+                true
+            }
+        }
+    }
+
+    fun setData(items: List<Todos>) {
+        differ.submitList(items)
+    }
+
+    fun clearActionMode(){
+        if(this::actionMode.isInitialized){
+            actionMode.clearActionMode()
+        }
     }
 
     private fun getColorPriority(todosPriority: TodosPriority): ColorInfoTodosCard {
@@ -79,15 +111,6 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
             TodosPriority.MEDIUM -> ColorInfoTodosCard(R.color.marigold, R.color.cosmic_late)
             TodosPriority.HIGH -> ColorInfoTodosCard(R.color.red_vermilion, R.color.pink_linen)
         }
-    }
-
-    fun setData(todos: List<Todos>) {
-        differ.submitList(todos)
-    }
-
-    interface TodosCardEvent {
-        fun onItemClick(todos:Todos)
-        fun onItemMenuClick(todos:Todos)
     }
 
 }
