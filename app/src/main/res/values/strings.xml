@@ -43,4 +43,5 @@
     <string name="delete_all_confirmation">All todos successfully deleted</string>
     <string name="filter_by">Filter By</string>
     <string name="all">All</string>
+    <string name="example_date">23–02–2023</string>
 </resources>
