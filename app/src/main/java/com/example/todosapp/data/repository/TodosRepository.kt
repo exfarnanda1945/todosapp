@@ -13,4 +13,6 @@ interface TodosRepository {
     fun searchAndFilterTodos(filter: FilterBy, sort: SortBy, search: String): Flow<Resource<List<Todos>>>
 
     suspend fun deleteAllTodos()
+
+    fun getListDoneTodos(): Flow<Resource<List<Todos>>>
 }

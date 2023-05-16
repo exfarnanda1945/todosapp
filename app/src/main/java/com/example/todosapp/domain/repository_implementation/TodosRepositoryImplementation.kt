@@ -66,4 +66,16 @@ class TodosRepositoryImplementation @Inject constructor(
         }
     }
 
+    override fun getListDoneTodos(): Flow<Resource<List<Todos>>> {
+        return try {
+            dao.getListDoneTodos().map { Resource.Success(it.map { value -> value.toTodos() }) }
+                .flowOn(Dispatchers.IO)
+        } catch (e: Exception) {
+            flow<Resource<List<Todos>>> {
+                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
+            }.flowOn(Dispatchers.IO)
+        }
+    }
+
+
 }
