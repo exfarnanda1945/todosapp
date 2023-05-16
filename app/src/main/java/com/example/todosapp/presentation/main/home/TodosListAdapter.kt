@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todosapp.R
+import com.example.todosapp.common.AdapterDiffer
 import com.example.todosapp.common.Utils
 import com.example.todosapp.data.local.TodosPriority
 import com.example.todosapp.databinding.TodosCardBinding
@@ -15,26 +15,16 @@ import com.example.todosapp.presentation.util.ColorInfoTodosCard
 
 class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHolder>() {
 
-    private val diffCallBack = object : DiffUtil.ItemCallback<Todos>() {
-        override fun areItemsTheSame(oldItem: Todos, newItem: Todos): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Todos, newItem: Todos): Boolean {
-            return oldItem == newItem
-        }
-
-    }
-
-    private val differ = AsyncListDiffer(this, diffCallBack)
-
      lateinit var todosCardEvent: TodosCardEvent
+
+    private val differ = AsyncListDiffer(this, AdapterDiffer.diffCallBack)
 
     inner class TodosListViewHolder(private val binding: TodosCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Todos) {
             binding.titleTodosCard.text = item.title
             binding.descTodosCard.text = item.description
+            binding.todosCreatedDate.text = Utils.convertLongToTime(item.date!!).replace("."," ")
             binding.txtPriority.apply {
                 val color = getColorPriority(item.priority)
                 text = item.priority.name
@@ -99,4 +89,5 @@ class TodosListAdapter : RecyclerView.Adapter<TodosListAdapter.TodosListViewHold
         fun onItemClick(todos:Todos)
         fun onItemMenuClick(todos:Todos)
     }
+
 }
