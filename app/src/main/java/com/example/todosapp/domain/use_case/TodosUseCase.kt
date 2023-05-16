@@ -34,4 +34,8 @@ class TodosUseCase @Inject constructor(
         return repository.deleteAllTodos()
     }
 
+    override fun getListDoneTodos(): Flow<Resource<List<Todos>>> {
+        return repository.getListDoneTodos()
+    }
+
 }
