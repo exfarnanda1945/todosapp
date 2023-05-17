@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todosapp.R
+import com.example.todosapp.common.Resource
 import com.example.todosapp.common.Utils
 import com.example.todosapp.data.local.FilterBy
 import com.example.todosapp.data.local.SortBy
@@ -57,37 +58,37 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.listTodos.observe(viewLifecycleOwner) { result ->
-            when {
-                result.data?.isNotEmpty() == true -> {
-                    binding.emptyTodos.isVisible = false
-                    binding.rvTodos.isVisible = true
-                    todosAdapter.setData(result.data)
-                    todosAdapter.todosCardEvent = object : TodosListAdapter.TodosCardEvent {
-                        override fun onItemClick(todos: Todos) {
-                            val action =
-                                HomeFragmentDirections.actionHomeFragmentToAddEditActivity(todos)
-                            findNavController().navigate(action)
-                        }
+            when (result) {
+                is Resource.Success -> {
+                    val data = result.data!!
 
-                        override fun onItemMenuClick(todos: Todos) {
-                            val action =
-                                HomeFragmentDirections.actionHomeFragmentToTodosItemBottomSheet(
-                                    todos
-                                )
-                            findNavController().navigate(action)
-                        }
+                    if (data.isEmpty()) {
+                        showEmptyScreen(true)
+                    }
 
+                    if (data.isNotEmpty()) {
+                        showEmptyScreen(false)
+                        todosAdapter.setData(result.data)
+                        todosAdapter.todosCardEvent = object : TodosListAdapter.TodosCardEvent {
+                            override fun onItemClick(todos: Todos) {
+                                val action =
+                                    HomeFragmentDirections.actionHomeFragmentToAddEditActivity(todos)
+                                findNavController().navigate(action)
+                            }
+
+                            override fun onItemMenuClick(todos: Todos) {
+                                val action =
+                                    HomeFragmentDirections.actionHomeFragmentToTodosItemBottomSheet(
+                                        todos
+                                    )
+                                findNavController().navigate(action)
+                            }
+                        }
                     }
                 }
 
-                result.data?.isEmpty() == true -> {
-                    binding.emptyTodos.isVisible = true
-                    binding.rvTodos.isVisible = false
-                }
-
-                result.message?.isNotEmpty() == true -> {
-                    binding.emptyTodos.isVisible = true
-                    binding.rvTodos.isVisible = false
+                is Resource.Error -> {
+                    showEmptyScreen(true)
                     Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -107,10 +108,10 @@ class HomeFragment : Fragment() {
                 menuInflater.inflate(R.menu.home_menu, menu)
 
                 homeViewModel.sortBy.observe(viewLifecycleOwner) { sortBy ->
-                    setSelectedSubMenu(menu,R.id.sortByMenu,setSortMenuItemId(sortBy))
+                    setSelectedSubMenu(menu, R.id.sortByMenu, setSortMenuItemId(sortBy))
                 }
                 homeViewModel.filterBy.observe(viewLifecycleOwner) { filterBy ->
-                    setSelectedSubMenu(menu,R.id.filterByMenu,setFilterMenuItemId(filterBy))
+                    setSelectedSubMenu(menu, R.id.filterByMenu, setFilterMenuItemId(filterBy))
                 }
 
 
@@ -163,6 +164,17 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    private fun showEmptyScreen(show: Boolean) {
+        if (show) {
+            binding.emptyTodos.isVisible = true
+            binding.rvTodos.isVisible = false
+        } else {
+            binding.emptyTodos.isVisible = false
+            binding.rvTodos.isVisible = true
+        }
+
+    }
+
     fun setSelectedSubMenu(menu: Menu, parentMenuId: Int, menuSelected: Int) {
         val getSubMenu = menu.findItem(parentMenuId).subMenu!!
         getSubMenu.forEach { subMenuItem ->
@@ -200,14 +212,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setSortMenuItemId(sortBy: SortBy):Int {
+    private fun setSortMenuItemId(sortBy: SortBy): Int {
         return when (sortBy) {
             SortBy.DATE_ASC -> R.id.date_asc
             SortBy.DATE_DESC -> R.id.date_desc
         }
     }
 
-    private fun setFilterMenuItemId(filter: FilterBy):Int {
+    private fun setFilterMenuItemId(filter: FilterBy): Int {
         return when (filter) {
             FilterBy.HIGH_PRIORITY -> R.id.high_priority
             FilterBy.MEDIUM_PRIORITY -> R.id.medium_priority
