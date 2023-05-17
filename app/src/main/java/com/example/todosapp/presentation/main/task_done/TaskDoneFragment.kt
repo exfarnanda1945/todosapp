@@ -14,6 +14,7 @@ import com.example.todosapp.R
 import com.example.todosapp.common.Resource
 import com.example.todosapp.databinding.FragmentTaskDoneBinding
 import com.example.todosapp.domain.model.Todos
+import com.example.todosapp.presentation.base.TodosActionMode
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +48,7 @@ class TaskDoneFragment : Fragment() {
                         val actionMode = TaskDoneActionMode(requireActivity())
                         rvAdapter.actionMode = actionMode
                         actionMode.onActionMenuItemClick =
-                            object : TaskDoneActionMode.OnActionMenuItemClick {
+                            object : TodosActionMode.OnActionMenuItemClick {
                                 override fun delete(listTodos: List<Todos>) {
                                     listTodos.map { todos ->
                                         mViewModel.deleteTodos(todos)
