@@ -10,6 +10,9 @@ interface TodosDao {
     @Query("SELECT * FROM $TABLE_NAME WHERE isArchive = 0 AND isDone = 1 ORDER BY date DESC")
     fun getListDoneTodos(): Flow<List<ToDosEntity>>
 
+    @Query("SELECT * FROM $TABLE_NAME WHERE isArchive = 1 AND isDone = 0 ORDER BY date DESC")
+    fun getListArchiveTodos(): Flow<List<ToDosEntity>>
+
     @Upsert
     suspend fun createTodos(todos: ToDosEntity)
 

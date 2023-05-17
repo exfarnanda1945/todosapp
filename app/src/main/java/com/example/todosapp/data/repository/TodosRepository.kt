@@ -15,4 +15,5 @@ interface TodosRepository {
     suspend fun deleteAllTodos()
 
     fun getListDoneTodos(): Flow<Resource<List<Todos>>>
+    fun getListArchiveTodos(): Flow<Resource<List<Todos>>>
 }
