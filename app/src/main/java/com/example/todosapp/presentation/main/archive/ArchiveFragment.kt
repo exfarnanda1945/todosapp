@@ -1,4 +1,4 @@
-package com.example.todosapp.presentation.main.task_done
+package com.example.todosapp.presentation.main.archive
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,31 +12,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todosapp.R
 import com.example.todosapp.common.Resource
-import com.example.todosapp.databinding.FragmentTaskDoneBinding
+import com.example.todosapp.databinding.FragmentArchiveBinding
 import com.example.todosapp.domain.model.Todos
 import com.example.todosapp.presentation.base.TodosActionMode
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskDoneFragment : Fragment() {
+class ArchiveFragment : Fragment() {
 
-    private var _binding: FragmentTaskDoneBinding? = null
+    private var _binding:FragmentArchiveBinding? = null
     private val binding get() = _binding!!
 
-    private val rvAdapter by lazy { TaskDoneAdapter(requireActivity()) }
-    private val mViewModel by viewModels<TaskDoneViewModel>()
+    private val archiveAdapter by lazy { ArchiveAdapter(requireActivity()) }
+    private val archiveViewModel by viewModels<ArchiveViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTaskDoneBinding.inflate(inflater, container, false)
-        binding.rvTaskDone.apply {
+        _binding = FragmentArchiveBinding.inflate(layoutInflater,container,false)
+
+        binding.rvArchive.apply {
             setHasFixedSize(true)
-            adapter = rvAdapter
+            adapter = archiveAdapter
             layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         }
 
-        mViewModel.taskDoneTodos.observe(viewLifecycleOwner) {
+        archiveViewModel.taskDoneTodos.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
                     val data = it.data!!
@@ -44,14 +46,14 @@ class TaskDoneFragment : Fragment() {
                     if (data.isEmpty()) {
                         showEmptyScreen(true)
                     } else {
-                        rvAdapter.setData(data)
-                        val actionMode = TaskDoneActionMode(requireActivity())
-                        rvAdapter.actionMode = actionMode
+                        archiveAdapter.setData(data)
+                        val actionMode = ArchiveActionMode(requireActivity())
+                        archiveAdapter.actionMode = actionMode
                         actionMode.onActionMenuItemClick =
                             object : TodosActionMode.OnActionMenuItemClick {
                                 override fun delete(listTodos: List<Todos>) {
                                     listTodos.map { todos ->
-                                        mViewModel.deleteTodos(todos)
+                                        archiveViewModel.deleteTodos(todos)
                                     }
                                     Toast.makeText(
                                         requireContext(),
@@ -63,24 +65,25 @@ class TaskDoneFragment : Fragment() {
                         showEmptyScreen(false)
                     }
                 }
-
                 is Resource.Error -> {
                     showEmptyScreen(true)
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT)
                         .show()
                 }
+                else -> {}
             }
         }
+
         return binding.root
     }
 
     private fun showEmptyScreen(show: Boolean) {
         if (show) {
             binding.emptyTodos.isVisible = true
-            binding.rvTaskDone.isVisible = false
+            binding.rvArchive.isVisible = false
         } else {
             binding.emptyTodos.isVisible = false
-            binding.rvTaskDone.isVisible = true
+            binding.rvArchive.isVisible = true
         }
 
     }
@@ -88,6 +91,7 @@ class TaskDoneFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        rvAdapter.clearActionMode()
+        archiveAdapter.clearActionMode()
     }
+
 }

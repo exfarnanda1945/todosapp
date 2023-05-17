@@ -1,5 +1,4 @@
-package com.example.todosapp.presentation.main.task_done
-
+package com.example.todosapp.presentation.main.archive
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,16 +9,16 @@ import com.example.todosapp.common.AdapterDiffer
 import com.example.todosapp.databinding.TodosCardBinding
 import com.example.todosapp.domain.model.Todos
 
-class TaskDoneAdapter(
+class ArchiveAdapter(
     private val requireActivity: FragmentActivity,
-) : RecyclerView.Adapter<TaskDoneViewHolder>() {
+) : RecyclerView.Adapter<ArchiveViewHolder>() {
 
-    lateinit var actionMode: TaskDoneActionMode
+    lateinit var actionMode: ArchiveActionMode
     private val differ = AsyncListDiffer(this, AdapterDiffer.diffCallBack)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskDoneViewHolder {
-        return TaskDoneViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveViewHolder {
+        return ArchiveViewHolder(
             TodosCardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -32,7 +31,7 @@ class TaskDoneAdapter(
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: TaskDoneViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArchiveViewHolder, position: Int) {
         val item = differ.currentList[position]
         holder.bind(item)
         holder.cardLayout.apply {
@@ -65,4 +64,3 @@ class TaskDoneAdapter(
         }
     }
 }
-

@@ -38,4 +38,8 @@ class TodosUseCase @Inject constructor(
         return repository.getListDoneTodos()
     }
 
+    override fun getListArchiveTodos(): Flow<Resource<List<Todos>>> {
+        return repository.getListArchiveTodos()
+    }
+
 }
