@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/custom_toast_success"
+    app:cardBackgroundColor="@color/slimy_green"
+    app:cardCornerRadius="10dp">
+    <TextView
+        android:id="@+id/success_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="10dp"
+        android:text="@string/todos_delete_info"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_check"
+        android:drawablePadding="5dp"
+        app:drawableTint="@color/white" />
+</androidx.cardview.widget.CardView>
