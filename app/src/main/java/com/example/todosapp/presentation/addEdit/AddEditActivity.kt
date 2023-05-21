@@ -5,10 +5,12 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -18,6 +20,7 @@ import com.example.todosapp.R
 import com.example.todosapp.common.Utils
 import com.example.todosapp.data.local.TodosPriority
 import com.example.todosapp.databinding.ActivityAddEditBinding
+import com.example.todosapp.databinding.CustomToastSuccessBinding
 import com.example.todosapp.domain.model.Todos
 import com.example.todosapp.presentation.main.MainActivity
 import com.google.android.material.datepicker.CalendarConstraints
@@ -217,6 +220,7 @@ class AddEditActivity : AppCompatActivity() {
             }
 
             mViewModel.upsertTodos(todos)
+            showToast()
             startActivity(Intent(this@AddEditActivity, MainActivity::class.java))
         } else {
             showErrorForm()
@@ -239,4 +243,15 @@ class AddEditActivity : AppCompatActivity() {
     private fun setDeadlineText(deadlineDate: Long?) = if (deadlineDate != null) "Deadline set ${
         Utils.convertLongToTime(deadlineDate).replace(".", " ")
     }" else getString(R.string.pick_deadline)
+
+    private fun showToast() {
+        val toastView = CustomToastSuccessBinding.inflate(layoutInflater)
+        toastView.successMessage.text = getString(R.string.todos_add_info)
+
+        Toast(this@AddEditActivity).apply {
+            setGravity(Gravity.BOTTOM, 0, 180)
+            duration = Toast.LENGTH_LONG
+            view = toastView.root
+        }.show()
+    }
 }

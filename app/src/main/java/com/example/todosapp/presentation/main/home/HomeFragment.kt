@@ -146,7 +146,6 @@ class HomeFragment : Fragment() {
                             message = R.string.delete_all_todos,
                             onPositive = { homeViewModel.deleteAllTodos() },
                             onNegative = {},
-                            toastPositiveText = R.string.delete_all_confirmation,
                             primaryColor = R.color.red_pink
                         )
                     }
