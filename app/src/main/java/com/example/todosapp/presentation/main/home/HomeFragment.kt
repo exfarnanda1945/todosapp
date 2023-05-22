@@ -88,8 +88,10 @@ class HomeFragment : BaseFragment() {
 
                 is Resource.Error -> {
                     showEmptyScreen(true)
-                    showToast(true,result.message!!)
+                    showToast(true, result.message!!)
                 }
+
+                else -> {}
             }
         }
 
@@ -142,7 +144,10 @@ class HomeFragment : BaseFragment() {
                             context = requireContext(),
                             title = R.string.delete_all,
                             message = R.string.delete_all_todos,
-                            onPositive = { homeViewModel.deleteAllTodos() },
+                            onPositive = {
+                                homeViewModel.deleteAllTodos()
+                                showToast(false, getString(R.string.delete_all_confirmation))
+                            },
                             onNegative = {},
                             primaryColor = R.color.red_pink
                         )
