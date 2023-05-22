@@ -25,9 +25,19 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.materialToolbar)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> binding.materialToolbar.title = "Todos"
+                R.id.taskDoneFragment -> binding.materialToolbar.title = "Todos Done"
+                R.id.archiveFragment -> binding.materialToolbar.title = "Archive"
+                else -> binding.materialToolbar.title = "About"
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
 }

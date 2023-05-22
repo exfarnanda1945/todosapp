@@ -7,14 +7,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -27,11 +25,12 @@ import com.example.todosapp.data.local.FilterBy
 import com.example.todosapp.data.local.SortBy
 import com.example.todosapp.databinding.FragmentHomeBinding
 import com.example.todosapp.domain.model.Todos
+import com.example.todosapp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel by activityViewModels<HomeViewModel>()
@@ -89,8 +88,7 @@ class HomeFragment : Fragment() {
 
                 is Resource.Error -> {
                     showEmptyScreen(true)
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(true,result.message!!)
                 }
             }
         }
@@ -146,7 +144,6 @@ class HomeFragment : Fragment() {
                             message = R.string.delete_all_todos,
                             onPositive = { homeViewModel.deleteAllTodos() },
                             onNegative = {},
-                            toastPositiveText = R.string.delete_all_confirmation,
                             primaryColor = R.color.red_pink
                         )
                     }

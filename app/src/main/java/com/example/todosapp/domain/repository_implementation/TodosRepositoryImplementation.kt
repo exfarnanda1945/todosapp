@@ -12,9 +12,9 @@ import com.example.todosapp.data.repository.TodosRepository
 import com.example.todosapp.domain.model.Todos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transform
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,15 +45,14 @@ class TodosRepositoryImplementation @Inject constructor(
         search: String
     ): Flow<Resource<List<Todos>>> {
         val query = searchAndFilerQueryBuilder(filter, sort, search)
-        return try {
-            dao.searchAndFilterTodos(SimpleSQLiteQuery(query))
-                .map { Resource.Success(it.map { value -> value.toTodos() }) }
-                .flowOn(Dispatchers.IO)
-        } catch (e: Exception) {
-            flow<Resource<List<Todos>>> {
-                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
-            }.flowOn(Dispatchers.IO)
-        }
+        return dao.searchAndFilterTodos(SimpleSQLiteQuery(query))
+            .transform { value ->
+                emit(Resource.Success(value.map { item -> item.toTodos() }) as Resource<List<Todos>>)
+            }
+            .catch { value ->
+                emit(Resource.Error(value.localizedMessage ?: "Unexpected error"))
+            }
+            .flowOn(Dispatchers.IO)
     }
 
     override suspend fun deleteAllTodos() {
@@ -67,25 +66,25 @@ class TodosRepositoryImplementation @Inject constructor(
     }
 
     override fun getListDoneTodos(): Flow<Resource<List<Todos>>> {
-        return try {
-            dao.getListDoneTodos().map { Resource.Success(it.map { value -> value.toTodos() }) }
-                .flowOn(Dispatchers.IO)
-        } catch (e: Exception) {
-            flow<Resource<List<Todos>>> {
-                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
-            }.flowOn(Dispatchers.IO)
+        return dao.getListDoneTodos()
+            .transform {
+            emit(Resource.Success(it.map { value -> value.toTodos() }) as Resource<List<Todos>>)
+            }
+            .catch { value ->
+            emit(Resource.Error(value.localizedMessage ?: "Unexpected error"))
         }
+            .flowOn(Dispatchers.IO)
     }
 
     override fun getListArchiveTodos(): Flow<Resource<List<Todos>>> {
-        return try {
-            dao.getListArchiveTodos().map { Resource.Success(it.map { value -> value.toTodos() }) }
-                .flowOn(Dispatchers.IO)
-        } catch (e: Exception) {
-            flow<Resource<List<Todos>>> {
-                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
-            }.flowOn(Dispatchers.IO)
-        }
+        return dao.getListArchiveTodos()
+            .transform {
+                emit(Resource.Success(it.map { value -> value.toTodos() }) as Resource<List<Todos>>)
+            }
+            .catch { value ->
+                emit(Resource.Error(value.localizedMessage ?: "Unexpected error"))
+            }
+            .flowOn(Dispatchers.IO)
     }
 
 

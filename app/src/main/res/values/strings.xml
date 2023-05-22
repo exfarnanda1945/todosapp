@@ -37,11 +37,16 @@
     <string name="delete_confirm">Do you want delete this todos?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="todos_delete_info">Todos Successfully deleted</string>
+    <string name="todos_delete_info">Todos successfully deleted</string>
     <string name="menu_item">Menu Item</string>
     <string name="delete_all_todos">Do you want to delete all todos ?</string>
     <string name="delete_all_confirmation">All todos successfully deleted</string>
     <string name="filter_by">Filter By</string>
     <string name="all">All</string>
     <string name="example_date">23–02–2023</string>
+    <string name="todos_add_info">Todos successfully added</string>
+    <string name="todos_update_info">Todos successfully update</string>
+    <string name="todos_archive_info">Move to archive success</string>
+    <string name="todos_done_info">Move to done success</string>
+    <string name="about">About</string>
 </resources>

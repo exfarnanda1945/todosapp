@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
@@ -26,7 +25,6 @@ object Utils {
         @StringRes message: Int,
         onPositive: () -> Unit,
         onNegative: () -> Unit,
-        @StringRes toastPositiveText: Int,
         @ColorRes primaryColor: Int
     ) {
         val alertDialogBuilder = AlertDialog.Builder(context)
@@ -36,10 +34,6 @@ object Utils {
             setNegativeButton(context.getString(R.string.no)) { _, _ -> onNegative() }
             setPositiveButton(context.getString(R.string.yes)) { _, _ ->
                 onPositive()
-                Toast.makeText(
-                    context, context.getString(toastPositiveText),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
 
             val dialog = alertDialogBuilder.create()
