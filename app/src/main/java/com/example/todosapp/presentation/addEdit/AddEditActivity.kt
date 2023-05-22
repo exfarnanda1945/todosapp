@@ -221,7 +221,10 @@ class AddEditActivity : AppCompatActivity() {
 
             mViewModel.upsertTodos(todos)
             showToast()
-            startActivity(Intent(this@AddEditActivity, MainActivity::class.java))
+
+            val intent = Intent(this@AddEditActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         } else {
             showErrorForm()
         }
@@ -246,7 +249,8 @@ class AddEditActivity : AppCompatActivity() {
 
     private fun showToast() {
         val toastView = CustomToastSuccessBinding.inflate(layoutInflater)
-        toastView.successMessage.text = getString(R.string.todos_add_info)
+        toastView.successMessage.text =
+            if (isUpdate) getString(R.string.todos_update_info) else getString(R.string.todos_add_info)
 
         Toast(this@AddEditActivity).apply {
             setGravity(Gravity.BOTTOM, 0, 180)
@@ -254,4 +258,5 @@ class AddEditActivity : AppCompatActivity() {
             view = toastView.root
         }.show()
     }
+
 }
