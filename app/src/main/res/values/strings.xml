@@ -45,6 +45,7 @@
     <string name="all">All</string>
     <string name="example_date">23–02–2023</string>
     <string name="todos_add_info">Todos successfully added</string>
+    <string name="todos_update_info">Todos successfully update</string>
     <string name="todos_archive_info">Move to archive success</string>
     <string name="todos_done_info">Move to done success</string>
     <string name="about">About</string>
